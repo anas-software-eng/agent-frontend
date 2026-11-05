@@ -1,9 +1,16 @@
 :root {
+  --app-accent: #f54927;
+  --app-accent-hover: #ed2b05;
+  --app-accent-soft: #f8e7e3;
+  --app-canvas: #f8f8fb;
+  --app-line: #eeedf2;
+  --app-text: #1c1b27;
+  --app-muted: #898795;
   font-family: Inter, 'Segoe UI', sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #0f172a;
-  background: linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%);
+  color: var(--app-text);
+  background: var(--app-canvas);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -22,7 +29,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+  background: var(--app-canvas);
 }
 
 img {

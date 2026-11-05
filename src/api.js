@@ -8,6 +8,10 @@ const api = axios.create({
   },
 })
 
-
+export const invoiceApi = {
+  create: (invoice) => api.post('/invoices', invoice),
+  list: () => api.get('/invoices'),
+  downloadPdf: (invoiceId) => api.get(`/invoices/${invoiceId}/pdf`, { responseType: 'blob' }),
+}
 
 export default api

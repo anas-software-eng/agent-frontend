@@ -1,12 +1,49 @@
 import { useState } from 'react'
+import api from '../api'
+
+
 
 const AuthPage = ({ mode }) => {
   const isSignup = mode === 'signup'
-  const [submitted, setSubmitted] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  })
 
-  const handleSubmit = (event) => {
+  const handleChange = (event) => {
+    const { name, value } = event.target
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    setSubmitted(true)
+    setErrorMessage('')
+    setIsSubmitting(true)
+
+    try {
+      const payload = isSignup
+        ? formData
+        : { email: formData.email, password: formData.password }
+
+      await api.post(isSignup ? '/register' : '/login', payload)
+      window.location.assign(isSignup ? '/login' : '/dashboard')
+    } catch (error) {
+      const responseMessage = error.response?.data
+      setErrorMessage(
+        typeof responseMessage === 'string'
+          ? responseMessage
+          : responseMessage?.message || 'Unable to complete your request. Please try again.',
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -33,6 +70,8 @@ const AuthPage = ({ mode }) => {
               Full name
               <input
                 autoComplete="name"
+                value={formData.name}
+                onChange={handleChange}
                 name="name"
                 placeholder="Your name"
                 required
@@ -46,6 +85,8 @@ const AuthPage = ({ mode }) => {
             <input
               autoComplete="email"
               name="email"
+              value={formData.email}
+               onChange={handleChange}
               placeholder="you@example.com"
               required
               type="email"
@@ -57,6 +98,8 @@ const AuthPage = ({ mode }) => {
             <input
               autoComplete={isSignup ? 'new-password' : 'current-password'}
               minLength={isSignup ? 8 : undefined}
+              value={formData.password}
+               onChange={handleChange}
               name="password"
               placeholder={isSignup ? 'At least 8 characters' : 'Enter your password'}
               required
@@ -75,13 +118,13 @@ const AuthPage = ({ mode }) => {
             <p className="auth-help">Need help signing in? Contact your administrator.</p>
           )}
 
-          <button className="auth-submit" type="submit">
-            {isSignup ? 'Create account' : 'Log in'}
+          <button className="auth-submit" disabled={isSubmitting} type="submit">
+            {isSubmitting ? 'Please wait...' : isSignup ? 'Create account' : 'Log in'}
           </button>
 
-          {submitted && (
-            <p className="auth-notice" role="status">
-              Authentication is not connected yet. Please contact your administrator to enable access.
+          {errorMessage && (
+            <p className="auth-notice" role="alert">
+              {errorMessage}
             </p>
           )}
         </form>
