@@ -14,4 +14,8 @@ export const invoiceApi = {
   downloadPdf: (invoiceId) => api.get(`/invoices/${invoiceId}/pdf`, { responseType: 'blob' }),
 }
 
+export const agentApi = {
+  chat: (message, conversationId) => api.post('/chat', { message, conversationId }),
+}
+
 export default api

@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
-
 import './Dashboard.css'
 import InvoiceWorkspace from './InvoiceWorkspace'
+import Chatbot from '../Components/Chatbot'
+
 
 
 
@@ -38,6 +39,8 @@ const formatMoney = (value) => new Intl.NumberFormat('en-US', {
   currency: 'USD',
   maximumFractionDigits: 0,
 }).format(value)
+
+
 
 
 
@@ -159,6 +162,8 @@ function Dashboard() {
         </div>
       )}
       {toast && <div className="workspace-toast" role="status">{toast}</div>}
+      <Chatbot />
+
     </main>
   )
 }
