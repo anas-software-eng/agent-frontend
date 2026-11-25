@@ -18,4 +18,9 @@ export const agentApi = {
   chat: (message, conversationId) => api.post('/chat', { message, conversationId }),
 }
 
+export const ragApi = {
+  ingestDocument: (document) => api.post('/rag/documents', document),
+  search: (query) => api.get('/rag/search', { params: { q: query } }),
+}
+
 export default api

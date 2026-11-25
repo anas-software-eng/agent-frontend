@@ -39,6 +39,7 @@ const Chatbot = () => {
           role: 'assistant',
           content: data.reply || 'I could not generate a response. Please try again.',
           task: data.task,
+          sources: data.sources,
         },
       ])
     } catch (error) {
@@ -109,6 +110,11 @@ const Chatbot = () => {
                   <span className="assistant-task-badge">
                     Task created{item.task.title ? `: ${item.task.title}` : ''}
                   </span>
+                )}
+                {item.sources?.length > 0 && (
+                  <div className="assistant-task-badge">
+                    Sources: {item.sources.map((source) => source.title).join(', ')}
+                  </div>
                 )}
               </div>
             ))}
